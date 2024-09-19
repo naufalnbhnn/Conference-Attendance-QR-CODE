@@ -13,4 +13,4 @@ Route::get('/visitor/undangan/{id}', [VisitorController::class, 'invitation'])->
 Route::get('/visitor/scan', [VisitorController::class, 'showScanPage'])->name('visitor.scan');
 Route::post('/check-in', [VisitorController::class, 'checkIn']);
 Route::get('/visitor/{id}/download-invitation', [VisitorController::class, 'downloadInvitation'])->name('visitor.downloadInvitation');
-
+Route::get('/visitor/{id}/download-pdf', [VisitorController::class, 'downloadPDF'])->name('visitor.downloadPDF');

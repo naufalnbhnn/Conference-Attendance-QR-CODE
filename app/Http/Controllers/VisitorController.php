@@ -110,8 +110,11 @@ public function downloadInvitation($id)
     // Ambil data pengunjung dari database
     $visitor = Visitor::findOrFail($id);
 
+    // Generate QR code
+    $qrCode = QrCode::size(250)->generate(route('visitor.undangan', $id));
+
     // Generate HTML content untuk undangan
-    $htmlContent = view('visitor.undangan', ['visitor' => $visitor, 'qrCode' => 'generated QR code'])->render();
+    $htmlContent = view('visitor.undangan', ['visitor' => $visitor, 'qrCode' => $qrCode])->render();
 
     // Tentukan nama file dan path
     $filename = 'invitation_' . $id . '.html';
@@ -123,6 +126,21 @@ public function downloadInvitation($id)
     // Kembalikan file sebagai unduhan
     return response()->download($path, $filename)->deleteFileAfterSend(true);
 }
+
+    public function downloadPDF($id)
+    {
+        // Ambil data pengunjung dari database
+        $visitor = Visitor::findOrFail($id);
+
+        // Generate QR code dari route undangan
+        $qrCode = QrCode::size(250)->generate(route('visitor.undangan', $id));
+
+        // Load view undangan dan generate PDF
+        $pdf = Pdf::loadView('visitor.undangan', ['visitor' => $visitor, 'qrCode' => $qrCode]);
+
+        // Unduh PDF dengan nama file 'undangan_[id].pdf'
+        return $pdf->download('undangan_' . $id . '.pdf');
+    }
 
 
 }

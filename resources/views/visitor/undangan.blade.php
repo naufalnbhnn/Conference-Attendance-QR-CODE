@@ -16,7 +16,7 @@
                 <p>Kepada Yth. {{ $visitor->name }}</p>
                 <p>Dengan hormat,</p>
                 <p>Kami dengan senang hati mengundang Anda untuk menghadiri acara kami yang akan datang. Berikut adalah detail undangan Anda:</p>
-                
+
                 <!-- Data Pengunjung -->
                 <hr>
                 <p><strong>Name:</strong> {{ $visitor->name }}</p>
@@ -38,7 +38,7 @@
         <!-- Tombol untuk Salin Link dan Unduh HTML -->
         <div class="mb-3">
             <a href="{{ route('visitor.index') }}" class="btn btn-secondary no-print">Kembali ke Daftar Pengunjung</a>
-            <button id="copyLink" class="btn btn-primary no-print">Salin Link</button>
+            <a id="downloadPdfButton" href="{{ route('visitor.downloadPDF', $visitor->id) }}" class="btn btn-success no-print">Unduh PDF</a>
             <a id="downloadButton" href="{{ route('visitor.downloadInvitation', $visitor->id) }}" class="btn btn-success no-print">Unduh HTML</a>
         </div>
 
@@ -49,16 +49,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <!-- JavaScript untuk Salin Link -->
-    <script>
-        document.getElementById('copyLink').addEventListener('click', function() {
-            const link = window.location.href; // Link saat ini
-            navigator.clipboard.writeText(link).then(function() {
-                alert('Link berhasil disalin ke clipboard!');
-            }, function(err) {
-                console.error('Gagal menyalin link: ', err);
-            });
-        });
-    </script>
+
 </body>
 </html>
