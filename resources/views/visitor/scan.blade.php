@@ -1,10 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Scan QR Code</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
+@extends('layouts.app')
+
+@section('content')
     <div class="container mt-4">
         <h1>Scan QR Code</h1>
 
@@ -77,5 +73,4 @@
             console.error('Unable to start QR code scanner', err);
         });
     </script>
-</body>
-</html>
+@endsection

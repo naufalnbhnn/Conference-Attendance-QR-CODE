@@ -4,6 +4,14 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\VisitorController;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
+Route::get('/', function(){
+    return redirect('/login');
+});
+
+Route::get('/home', function(){
+    return redirect('/visitors');
+});
+
 Route::get('/visitors', [VisitorController::class, 'index'])->name('visitor.index'); // Route untuk menampilkan daftar pengunjung
 Route::get('/visitors/create', [VisitorController::class, 'create'])->name('visitor.create'); // Route untuk menampilkan form pendaftaran pengunjung
 Route::post('/visitors', [VisitorController::class, 'store'])->name('visitor.store'); // Route untuk menyimpan data pengunjung
@@ -14,3 +22,7 @@ Route::get('/visitor/scan', [VisitorController::class, 'showScanPage'])->name('v
 Route::post('/check-in', [VisitorController::class, 'checkIn']);
 Route::get('/visitor/{id}/download-invitation', [VisitorController::class, 'downloadInvitation'])->name('visitor.downloadInvitation');
 Route::get('/visitor/{id}/download-pdf', [VisitorController::class, 'downloadPDF'])->name('visitor.downloadPDF');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
