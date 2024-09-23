@@ -40,6 +40,7 @@
             <a href="{{ route('visitor.index') }}" class="btn btn-secondary no-print">Kembali ke Daftar Pengunjung</a>
             <a id="downloadPdfButton" href="{{ route('visitor.downloadPDF', $visitor->id) }}" class="btn btn-success no-print">Unduh PDF</a>
             <a id="downloadButton" href="{{ route('visitor.downloadInvitation', $visitor->id) }}" class="btn btn-success no-print">Unduh HTML</a>
+            <a id="downloadQRCodeButton" href="{{ route('visitor.downloadQRCode', $visitor->id) }}" class="btn btn-primary no-print">Unduh QR Code</a>
         </div>
 
     </div>

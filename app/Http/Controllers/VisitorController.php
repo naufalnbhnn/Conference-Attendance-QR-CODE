@@ -142,5 +142,17 @@ public function downloadInvitation($id)
         return $pdf->download('undangan_' . $id . '.pdf');
     }
 
+    public function downloadQRCode($id)
+{
+    $visitor = Visitor::findOrFail($id);
+
+    // Membuat QR code sebagai PNG tanpa menggunakan Imagick
+    $qrCode = QrCode::format('png')->size(200)->generate($visitor->name);
+
+    // Mengembalikan file QR code sebagai download dengan nama 'qrcode.png'
+    return response($qrCode)
+        ->header('Content-Type', 'image/png')
+        ->header('Content-Disposition', 'attachment; filename="qrcode.png"');
+}
 
 }

@@ -10,8 +10,8 @@
 
         <!-- Kotak besar untuk scan QR Code -->
         <center>
-        <div id="qr-reader" style="width: 500px;"></div>
-        <div id="qr-reader-results"></div>
+            <div id="qr-reader" style="width: 500px;"></div>
+            <div id="qr-reader-results"></div>
         </center>
 
         <!-- Menampilkan hasil setelah check-in -->
@@ -36,35 +36,44 @@
 
     <script>
         // Fungsi untuk menangani hasil scan QR code
-        function onScanSuccess(decodedText, decodedResult) {
-            // Kirim data ke server untuk check-in
-            fetch('/api/check-in', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({ qr_code: decodedText })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Update tabel dengan informasi pengunjung
-                    document.getElementById('visitor-info').innerHTML = `
-                        <tr>
-                            <td>${data.visitor.name}</td>
-                            <td>${data.visitor.email}</td>
-                            <td>${data.visitor.affiliation}</td>
-                            <td>${data.visitor.check_in_time}</td>
-                            <td>${data.visitor.room}</td>
-                        </tr>
-                    `;
-                } else {
-                    alert('Check-in failed');
-                }
-            })
-            .catch(err => console.error('Error:', err));
+function onScanSuccess(decodedText, decodedResult) {
+    // Log hasil pemindaian untuk debugging
+    console.log('Decoded text:', decodedText);
+    console.log('Decoded result:', decodedResult);
+
+    // Kirim data ke server untuk check-in
+    fetch('/api/check-in', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}' // Laravel CSRF token
+        },
+        body: JSON.stringify({ qr_code: decodedText })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Server response:', data);
+        if (data.success) {
+            // Update tabel dengan informasi pengunjung
+            document.getElementById('visitor-info').innerHTML = `
+                <tr>
+                    <td>${data.visitor.name}</td>
+                    <td>${data.visitor.email}</td>
+                    <td>${data.visitor.affiliation}</td>
+                    <td>${data.visitor.check_in_time}</td>
+                    <td>${data.visitor.room}</td>
+                </tr>
+            `;
+        } else {
+            alert('Check-in failed: ' + data.message);
         }
+    })
+    .catch(err => {
+        console.error('Fetch error:', err);
+        alert('An error occurred during check-in. ' + err.message);
+    });
+}
+
 
         // Mulai proses QR code scanning
         var html5QrCode = new Html5Qrcode("qr-reader");

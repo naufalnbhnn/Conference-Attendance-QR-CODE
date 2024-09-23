@@ -14,3 +14,4 @@ Route::get('/visitor/scan', [VisitorController::class, 'showScanPage'])->name('v
 Route::post('/check-in', [VisitorController::class, 'checkIn']);
 Route::get('/visitor/{id}/download-invitation', [VisitorController::class, 'downloadInvitation'])->name('visitor.downloadInvitation');
 Route::get('/visitor/{id}/download-pdf', [VisitorController::class, 'downloadPDF'])->name('visitor.downloadPDF');
+Route::get('/visitor/{id}/download-qrcode', [VisitorController::class, 'downloadQRCode'])->name('visitor.downloadQRCode');

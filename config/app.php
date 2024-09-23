@@ -59,19 +59,10 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-
-
-        /*
-         * Package Service Providers...
-         */
-
         SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
-
-        /*
-         * Application Service Providers...
-         */
-
         App\Providers\AppServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
+        Barryvdh\Snappy\ServiceProvider::class,
         //App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class, // Uncomment jika menggunakan broadcasting
         //App\Providers\EventServiceProvider::class,
@@ -80,10 +71,6 @@ return [
     ],
 
     'aliases' => [
-
-        /*
-         * Laravel Framework Facades...
-         */
 
         'App' => Illuminate\Support\Facades\App::class,
         'Artisan' => Illuminate\Support\Facades\Artisan::class,
@@ -117,13 +104,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-        
-        /*
-         * Package Facades...
-         */
-
-        'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class, // Pastikan penulisan alias benar
-
+        'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
     ],
 
 ];
