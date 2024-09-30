@@ -22,6 +22,11 @@ Route::get('/visitors/{id}/qr', [VisitorController::class, 'showQr'])->name('vis
 Route::get('/visitor/undangan/{id}', [VisitorController::class, 'invitation'])->name('visitor.undangan');
 Route::get('/visitor/scan', [VisitorController::class, 'showScanPage'])->name('visitor.scan');
 Route::post('/check-in', [VisitorController::class, 'checkIn']);
+
+Route::get('visitor/{id}/download-qr-code', [VisitorController::class, 'downloadQrCode'])->name('visitor.downloadQrCode');
+Route::get('/scan', [VisitorController::class, 'showScanPage'])->name('visitor.scan');
+
+
 Route::get('/visitor/{id}/download-invitation', [VisitorController::class, 'downloadInvitation'])->name('visitor.downloadInvitation');
 Route::get('/visitor/{id}/download-pdf', [VisitorController::class, 'downloadPDF'])->name('visitor.downloadPDF');
 Route::get('/visitor/{id}/download-qrcode', [VisitorController::class, 'downloadQRCode'])->name('visitor.downloadQRCode');
