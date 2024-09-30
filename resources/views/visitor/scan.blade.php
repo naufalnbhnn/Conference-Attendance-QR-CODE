@@ -4,6 +4,10 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>Scan QR Code</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('LTE/plugins/fontawesome-free/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('LTE/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('LTE/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('LTE/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
     <style>
         video {
             transform: scaleX(-1);
@@ -18,7 +22,6 @@
     <div class="container mt-4">
         <h1>Scan QR Code</h1>
         <center>
-
             <div class="form-group">
                 <label for="room">Pilih Ruangan:</label>
                 <select class="form-control" id="room">
@@ -28,7 +31,6 @@
                     <option value="3">Ruangan 3</option>
                 </select>
             </div>
-
             <div id="qr-reader" style="width: 500px;"></div>
             <div id="qr-reader-results"></div>
         </center>
@@ -43,7 +45,7 @@
                     <th>Room</th>
                 </tr>
             </thead>
-            <tbody id="visitor-info">
+            <tbody id="tabel-visitor">
                 @foreach($checkInTimes as $checkIn)
                     <tr>
                         <td>{{ $checkIn->visitor->id_conference }}</td>
@@ -55,43 +57,13 @@
                     </tr>
                 @endforeach
             </tbody>
+            
         </table>
+        
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
     <script>
-        // Fungsi untuk menangani hasil scan QR code
-function onScanSuccess(decodedText, decodedResult) {
-    // Log hasil pemindaian untuk debugging
-    console.log('Decoded text:', decodedText);
-    console.log('Decoded result:', decodedResult);
-
-    // Kirim data ke server untuk check-in
-    fetch('/api/check-in', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': '{{ csrf_token() }}' // Laravel CSRF token
-        },
-        body: JSON.stringify({ qr_code: decodedText })
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Server response:', data);
-        if (data.success) {
-            // Update tabel dengan informasi pengunjung
-            document.getElementById('visitor-info').innerHTML = `
-                <tr>
-                    <td>${data.visitor.name}</td>
-                    <td>${data.visitor.email}</td>
-                    <td>${data.visitor.affiliation}</td>
-                    <td>${data.visitor.check_in_time}</td>
-                    <td>${data.visitor.room}</td>
-                </tr>
-            `;
-        } else {
-            alert('Check-in failed: ' + data.message);
-
         var scanning = false; // Flag untuk mencegah scan berulang
 
         function onScanSuccess(decodedText, decodedResult) {
@@ -124,34 +96,35 @@ function onScanSuccess(decodedText, decodedResult) {
                 return response.json();
             })
             .then(data => {
-    console.log('Response data:', data);
-    if (data.success) {
-        document.getElementById('visitor-info').insertAdjacentHTML('beforeend', `
-            <tr>
-                <td>${data.visitor.id_conference}</td>
-                <td>${data.visitor.name}</td>
-                <td>${data.visitor.email}</td>
-                <td>${data.visitor.affiliation}</td>
-                <td>${data.checkInTime.check_in_time}</td> <!-- Gunakan data check-in -->
-                <td>${data.checkInTime.room}</td> <!-- Gunakan data room -->
-            </tr>
-        `);
+                console.log('Response data:', data);
+                if (data.success) {
+                    document.getElementById('visitor-info').insertAdjacentHTML('beforeend', `
+                        <tr>
+                            <td>${data.visitor.id_conference}</td>
+                            <td>${data.visitor.name}</td>
+                            <td>${data.visitor.email}</td>
+                            <td>${data.visitor.affiliation}</td>
+                            <td>${data.visitor.check_in_time}</td>
+                            <td>Ruangan ${data.visitor.room}</td>
+                        </tr>
+                    `);
 
-        Swal.fire({
-            title: `Welcome Mr./Mrs. ${data.visitor.name}`,
-            text: `You have successfully checked in to Room ${data.checkInTime.room}.`,
-            icon: 'success',
-            timer: 2500,
-            showConfirmButton: false
-        });
-    } else {
-        alert('Check-in failed: ' + data.message);
-    }
+                    Swal.fire({
+                        title: Welcome Mr./Mrs. ${data.visitor.name},
+                        text: You have successfully checked in to Room ${data.visitor.room}.,
+                        icon: 'success',
+                        timer: 2500, // Set timer to 2.5 seconds (2500 ms)
+                        showConfirmButton: false // Tidak menampilkan tombol OK
+                    });
+                } else {
+                    alert('Check-in failed: ' + data.message);
+                }
 
-    setTimeout(() => {
-        scanning = false;
-    }, 3000);
-})
+                // Tunggu 3 detik sebelum mengizinkan scan ulang
+                setTimeout(() => {
+                    scanning = false; // Izinkan scan lagi setelah 3 detik
+                }, 3000);
+            })
             .catch(err => {
                 console.error('Error:', err);
                 alert('An error occurred. Please try again.');
@@ -162,13 +135,6 @@ function onScanSuccess(decodedText, decodedResult) {
                 }, 3000);
             });
         }
-    })
-    .catch(err => {
-        console.error('Fetch error:', err);
-        alert('An error occurred during check-in. ' + err.message);
-    });
-}
-
 
         // Mulai proses QR code scanning
         var html5QrCode = new Html5Qrcode("qr-reader");
