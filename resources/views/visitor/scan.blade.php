@@ -110,8 +110,8 @@
                     `);
 
                     Swal.fire({
-                        title: Welcome Mr./Mrs. ${data.visitor.name},
-                        text: You have successfully checked in to Room ${data.visitor.room}.,
+                        title: 'Welcome Mr./Mrs. ${data.visitor.name}',
+                        text: 'You have successfully checked in to Room ${data.visitor.room}.',
                         icon: 'success',
                         timer: 2500, // Set timer to 2.5 seconds (2500 ms)
                         showConfirmButton: false // Tidak menampilkan tombol OK
